@@ -1,0 +1,13 @@
+[package]
+name = "ttt"
+version = "0.0.1"
+description = "Timeless Time Tracking"
+license = "MIT"
+homepage = "https://github.com/passcod/ttt"
+repository = "https://github.com/passcod/ttt.git"
+authors = [
+  "Félix Saparelli <me@passcod.name>"
+]
+
+[dependencies]
+time = "*"
