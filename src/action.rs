@@ -24,7 +24,7 @@ pub fn from_string(task_str: &str) -> Option<Action> {
 }
 
 fn parse_duration(duration_str: &str) -> Option<Duration> {
-  let mut units: Vec<char> = vec!['Y', 'M', 'w', 'd', 'h', 'm', 's'];
+  let units: Vec<char> = vec!['Y', 'M', 'w', 'd', 'h', 'm', 's'];
   let mut times: HashMap<char, u32> = HashMap::with_capacity(7);
   times.insert('Y', 60 * 60 * 24 * 365);
   times.insert('M', 60 * 60 * 24 * 30);
@@ -62,7 +62,7 @@ fn parse_duration(duration_str: &str) -> Option<Duration> {
       }
     }
 
-    duration += if (i == units.len() - 1) {
+    duration += if i == units.len() - 1 {
       n
     } else {
       times.get(&units[i+1]).unwrap() * n

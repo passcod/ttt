@@ -8,6 +8,3 @@ repository = "https://github.com/passcod/ttt.git"
 authors = [
   "Félix Saparelli <me@passcod.name>"
 ]
-
-[dependencies]
-time = "*"

@@ -1,53 +1,66 @@
-extern crate time;
+#![feature(std_misc,unicode)]
 
 use action::Action;
+use entry::Entry;
 use std::env;
-use std::collections::VecDeque;
 
 mod action;
+mod entry;
 
 fn main() {
-  let mut args = env::args();
+  let args = env::args();
   if args.len() < 3 {
     return help();
   }
 
-  let mut argstrs: VecDeque<String> = VecDeque::with_capacity(args.len() - 1);
-  let _ = args.next();
-  for arg in args {
-    argstrs.push_back(arg);
+  let mut argstrs: Vec<String> = Vec::new();
+  for a in args {
+    argstrs.push(a.clone());
   }
+  argstrs.reverse();
 
-  assert!(argstrs.len() >= 2);
-  let project = argstrs.pop_front().unwrap();
+  let _ = argstrs.pop(); // $0 is program name
+  let project = argstrs.pop().unwrap();
   let action: Action;
   let task: Option<String>;
 
-  {
-    let arg = argstrs.pop_front().unwrap();
-	match action::from_string(arg.as_slice()) {
-	  Some(act) => {
-	    action = act;
-		task = None;
-	  },
-	  None => {
-	    task = Some(arg);
-		match argstrs.pop_front() {
-		  Some(s) => match action::from_string(s.as_slice()) {
-			Some(act) => {
-			  action = act;
-			},
-			None => return help()
-		  },
-		  None => return help()
-		};
-	  }
-	}
+  let arg = argstrs.pop().unwrap();
+  match action::from_string(&arg[..]) {
+    Some(act) => {
+      action = act;
+      task = None;
+    },
+    None => {
+      task = Some(arg);
+      match argstrs.pop() {
+        Some(s) => match action::from_string(&s[..]) {
+          Some(act) => {
+            action = act;
+          },
+          None => return help()
+        },
+        None => return help()
+      };
+    }
   }
 
-  let (notes, _) = argstrs.as_slices();
+  let notes = if argstrs.len() == 0 {
+    None
+  } else {
+    Some({
+      argstrs.reverse();
+      let mut niter = argstrs.iter();
+      let mut st = niter.next().unwrap().clone();
+      for s in niter {
+        st.push_str(" ");
+        st.push_str(s);
+      }
+      st
+    })
+  };
 
-  println!("a:{:?} t:{:?} n:{:?}", action, task, notes);
+  let entry = Entry::new(action, project, task, notes);
+  println!("{:?}", entry);
 }
 
 fn help() {
