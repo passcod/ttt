@@ -31,7 +31,7 @@ impl ToJson for Action {
     match *self {
       Action::Start => Json::String("start".to_string()),
       Action::End => Json::String("end".to_string()),
-      Action::Estimate(d) => Json::I64(d.num_seconds())
+      Action::Estimate(d) => Json::String(format!("estimate={}", d.num_seconds()))
     }
   }
 }
@@ -67,12 +67,12 @@ fn parse_duration(duration_str: &str) -> Option<Duration> {
   }
 
   if n > 0 && u != ' '  {
-    let mut i = -1;
+    let mut i = 0;
     for k in units.iter() {
-      i += 1;
       if *k == u {
         break;
       }
+      i += 1;
     }
 
     duration += if i == units.len() - 1 {

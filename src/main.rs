@@ -1,4 +1,4 @@
-#![feature(std_misc,unicode)]
+#![feature(fs,io,os,path,std_misc,unicode)]
 
 extern crate "rustc-serialize" as rustc_serialize;
 extern crate time;
@@ -64,7 +64,7 @@ fn main() {
   };
 
   let entry = Entry::new(action, project, task, notes);
-  println!("{}", entry.to_json().to_string());
+  entry.write();
 }
 
 fn help() {
