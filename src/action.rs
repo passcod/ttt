@@ -1,3 +1,4 @@
+use rustc_serialize::json::{ToJson, Json};
 use std::collections::HashMap;
 use std::time::Duration;
 
@@ -8,18 +9,30 @@ pub enum Action {
   Estimate(Duration)
 }
 
-pub fn from_string(task_str: &str) -> Option<Action> {
-  if task_str == "start" || task_str == "begin" {
-    Some(Action::Start)
-  } else if task_str == "end" || task_str == "stop" {
-    Some(Action::End)
-  } else if task_str.starts_with("estimate=") {
-    match parse_duration(&task_str[9..]) {
-      Some(t) => Some(Action::Estimate(t)),
-      None => None
+impl Action {
+  pub fn from_str(task_str: &str) -> Option<Action> {
+    if task_str == "start" || task_str == "begin" {
+      Some(Action::Start)
+    } else if task_str == "end" || task_str == "stop" {
+      Some(Action::End)
+    } else if task_str.starts_with("estimate=") {
+      match parse_duration(&task_str[9..]) {
+        Some(t) => Some(Action::Estimate(t)),
+        None => None
+      }
+    } else {
+      None
     }
-  } else {
-    None
+  }
+}
+
+impl ToJson for Action {
+  fn to_json(&self) -> Json {
+    match *self {
+      Action::Start => Json::String("start".to_string()),
+      Action::End => Json::String("end".to_string()),
+      Action::Estimate(d) => Json::I64(d.num_seconds())
+    }
   }
 }
 

@@ -1,7 +1,11 @@
 #![feature(std_misc,unicode)]
 
+extern crate "rustc-serialize" as rustc_serialize;
+extern crate time;
+
 use action::Action;
 use entry::Entry;
+use rustc_serialize::json::ToJson;
 use std::env;
 
 mod action;
@@ -25,7 +29,7 @@ fn main() {
   let task: Option<String>;
 
   let arg = argstrs.pop().unwrap();
-  match action::from_string(&arg[..]) {
+  match Action::from_str(&arg[..]) {
     Some(act) => {
       action = act;
       task = None;
@@ -33,7 +37,7 @@ fn main() {
     None => {
       task = Some(arg);
       match argstrs.pop() {
-        Some(s) => match action::from_string(&s[..]) {
+        Some(s) => match Action::from_str(&s[..]) {
           Some(act) => {
             action = act;
           },
@@ -60,7 +64,7 @@ fn main() {
   };
 
   let entry = Entry::new(action, project, task, notes);
-  println!("{:?}", entry);
+  println!("{}", entry.to_json().to_string());
 }
 
 fn help() {
