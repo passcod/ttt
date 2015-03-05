@@ -1,6 +1,6 @@
 [package]
 name = "ttt"
-version = "0.0.1"
+version = "1.0.0"
 description = "Timeless Time Tracking"
 license = "MIT"
 homepage = "https://github.com/passcod/ttt"

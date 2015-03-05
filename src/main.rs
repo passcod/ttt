@@ -5,7 +5,6 @@ extern crate time;
 
 use action::Action;
 use entry::Entry;
-use rustc_serialize::json::ToJson;
 use std::env;
 
 mod action;

@@ -1,6 +1,6 @@
 [root]
 name = "ttt"
-version = "0.0.1"
+version = "1.0.0"
 dependencies = [
  "rustc-serialize 0.3.1 (registry+https://github.com/rust-lang/crates.io-index)",
  "time 0.1.19 (registry+https://github.com/rust-lang/crates.io-index)",

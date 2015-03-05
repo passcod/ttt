@@ -5,7 +5,25 @@ _Timeless Time Tracking_
 ## Tracking
 
 ```bash
+# Synopsis:
 $ ttt <project> [task] <action> [notes...]
+
+# Examples:
+$ ttt dinner prepare.veggies estimate=25m
+$ ttt dinner prepare.veggies start
+# (some time passes)
+$ ttt dinner prepare.veggies end
+
+$ ttt meeting estimate=1h
+$ ttt meeting begin
+# (go to meeting)
+$ ttt meeting stop
+# (meeting has adjourned for lunch)
+$ ttt meeting estimate=3h
+# (it's already gone overtime and there's still a lot to do)
+$ ttt meeting start
+# (everyone's back from lunch)
+$ ttt meeting end
 ```
 
 Project can be anything, action is one of: `start`, `end`,
@@ -14,18 +32,19 @@ Project can be anything, action is one of: `start`, `end`,
 "done for the day", etc. `estimate=<duration>` is special and indicates that
 you're estimating the amount of work to be done on the `task` (or today, if the
 `task` is not specified) to be `<duration>`. That duration should be expressed
-in short form, e.g. `3h` or `30m` or `3/4h` or `1h15m` etc.
+in short form, e.g. `3d` or `30m` or `2h15` or `1h15m23s` etc. Valid units are
+`s` (seconds), `m` (minutes), `h` (hours), `d` (days), `w` (weeks), `M` (month)
+and `Y` (year).
 
-The format for `task` is free-form, but the convention is that subtasks are
+The format for `task` is free-form, but our convention is that subtasks are
 delimited with a `.`.  I.e. `task.subtask` or `task.subtask.item`.
 
 Anything else passed to the command is considered part of the free-form notes.
 
 ## What it does
 
-All that command does is record (either locally using files or remotely to a
-server as configured) all the information you've given it and the exact time
-you've run it.
+All that command does is record locally (in the ~/.ttt/entries/ directory)
+all the information you've given it and the exact time you've run it.
 
 You can't record things in the past, nor can you in the future. The command
 doesn't even care if you've already got a task "running" or if you're going
@@ -34,9 +53,9 @@ time and a payload of data.
 
 ## And then what?
 
-The format is uber simple, so you can build your own reporting tools to make
-this useful. For now this all falls on you, but as soon as we've got time we'll
-add some demos and standard tools here.
+The format is uber simple and in JSON, so you can build your own reporting
+tools to make this useful. For now this all falls on you, but as soon as we've
+got time we'll add some demos and standard tools here.
 
 ## Why Timeless?
 
